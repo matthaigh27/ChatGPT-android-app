@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,7 +22,14 @@ class MainActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.parseColor("#343541")
 
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun onLoadResource(view: WebView, url: String) {
+                if (view is CustomWebView && url == "https://chat.openai.com/backend-api/models") {
+                    view.loggedIn = true
+                }
+                return super.onLoadResource(view, url)
+            }
+        }
 
         webView.settings.userAgentString = userAgent
         webView.settings.domStorageEnabled = true

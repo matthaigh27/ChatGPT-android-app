@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <WebView
+    <com.matthaigh27.chatgptwrapper.CustomWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
