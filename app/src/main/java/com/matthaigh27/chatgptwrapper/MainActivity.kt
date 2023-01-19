@@ -8,38 +8,49 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import kotlinx.android.synthetic.main.activity_main.*
+import android.window.OnBackInvokedDispatcher
+import com.matthaigh27.chatgptwrapper.databinding.ActivityMainBinding
 
 class MainActivity : Activity() {
-    private val userAgent = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.79 Mobile Safari/537.36"
+    private val userAgent =
+        "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.5359.79 Mobile Safari/537.36"
     private val chatUrl = "https://chat.openai.com/"
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var webView: WebView
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        webView = binding.webView
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT
+            ) {
+                if (webView.canGoBack()) {
+                    webView.goBack()
+                } else {
+                    finish()
+                }
+            }
+        }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.parseColor("#343541")
 
-        webView.webViewClient = object : WebViewClient() {
-            override fun onLoadResource(view: WebView, url: String) {
-                if (view is CustomWebView && url == "https://chat.openai.com/backend-api/models") {
-                    view.loggedIn = true
-                }
-                return super.onLoadResource(view, url)
-            }
-        }
-
         webView.settings.userAgentString = userAgent
         webView.settings.domStorageEnabled = true
         webView.settings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
 
         webView.loadUrl(chatUrl)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if (webView.canGoBack())
+        if (webView.canGoBack() && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
             webView.goBack()
         else
             super.onBackPressed()
