@@ -1,7 +1,20 @@
 # ChatGPT App
+
+## About
+
 This (unofficial) app acts as a webview wrapper for [chat.openai.com](https://chat.openai.com)
 
 
-![](https://user-images.githubusercontent.com/44395485/205628877-53924327-3e30-4685-9359-574b21ae230a.png)
+<div align="center">
+<a href='https://github.com/matthaigh27/ChatGPT-android-app/releases/latest'><img alt='Get it on Github' src='./docs/assets/badge_github.png' height='80px'/></a>
+</div>
 
-You can find the latest release [here](https://github.com/matthaigh27/ChatGPT-android-app/releases/latest)
+## Screenshot
+
+<div align="center">
+<img src="./docs/assets/Screenshot_Pixel6pro.png" width="300"  />
+</div>
+
+## Installation
+
+Download the latest release and install it on your device.
